@@ -1,0 +1,6 @@
+{{ with secret "vagrant/pki/kube/issue/kube-scheduler" "common_name=kube-scheduler"}}
+{{ .Data.serial_number }}
+{{ .Data.certificate | plugin "certdump" "../master/pki/kube-scheduler-cert.pem"  "keyolk"}}
+{{ .Data.private_key | plugin "certdump" "../master/pki/kube-scheduler-key.pem"   "keyolk"}}
+{{ .Data.issuing_ca  | plugin "certdump" "../master/pki/kube-ca.pem"              "keyolk"}}
+{{ end }}

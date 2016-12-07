@@ -1,0 +1,6 @@
+KUBE_LOGTOSTDERR="--logtostderr=true"
+KUBE_LOG_LEVEL="--v=4"
+KUBE_MASTER="--master=https://kube-apiserver.local.io"
+KUBE_CONTROLLER_MANAGER_ROOT_CA_FILE="--root-ca-file=/opt/kubernetes/pki/kube-ca.pem"
+KUBE_CONTROLLER_MANAGER_SERVICE_ACCOUNT_PRIVATE_KEY_FILE="--service-account-private-key-file=/opt/kubernetes/pki/kube-apiserver-key.pem"
+KUBE_CONFIG="--kubeconfig=/opt/kubernetes/kube-cfg/kube-controller-manager.yml"

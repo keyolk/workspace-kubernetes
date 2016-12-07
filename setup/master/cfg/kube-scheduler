@@ -1,0 +1,5 @@
+KUBE_LOGTOSTDERR="--logtostderr=true"
+KUBE_LOG_LEVEL="--v=4"
+KUBE_MASTER="--master=https://kube-apiserver.local.io"
+KUBE_SCHEDULER_ARGS=""
+KUBE_CONFIG="--kubeconfig=/opt/kubernetes/kube-cfg/kube-scheduler.yml"

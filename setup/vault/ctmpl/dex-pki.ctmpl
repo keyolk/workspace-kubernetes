@@ -1,0 +1,6 @@
+{{ with secret "vagrant/pki/dex/issue/member" "common_name=dex.local.io" "alt_names=localhost" }}
+{{ .Data.serial_number }}
+{{ .Data.certificate | plugin "certdump" "../dex/pki/dex-cert.pem"  "keyolk" }}
+{{ .Data.private_key | plugin "certdump" "../dex/pki/dex-key.pem"   "keyolk" }}
+{{ .Data.issuing_ca  | plugin "certdump" "../dex/pki/dex-ca.pem"    "keyolk" }}
+{{ end }}

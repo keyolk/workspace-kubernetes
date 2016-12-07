@@ -1,0 +1,6 @@
+{{ with secret "vagrant/pki/kube/issue/kube-apiserver" "common_name=kube-apiserver"	"alt_names=kube-apiserver.local.io,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster.local" "ip_sans=192.168.16.1" }}
+{{ .Data.serial_number }}
+{{ .Data.certificate | plugin "certdump" "../master/pki/kube-apiserver-cert.pem"  "keyolk"}}
+{{ .Data.private_key | plugin "certdump" "../master/pki/kube-apiserver-key.pem"   "keyolk"}}
+{{ .Data.issuing_ca  | plugin "certdump" "../master/pki/kube-ca.pem"              "keyolk"}}
+{{ end }}

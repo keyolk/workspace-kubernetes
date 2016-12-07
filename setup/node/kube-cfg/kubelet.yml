@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Config
+clusters:
+- name: vagrant
+  cluster:
+    certificate-authority: /opt/kubernetes/pki/kube-ca.pem
+    server: https://kube-apiserver.vm
+users:
+- name: kubelet
+  user:
+    client-certificate: /opt/kubernetes/pki/kubelet-cert.pem
+    client-key: /opt/kubernetes/pki/kubelet-key.pem
+contexts:
+- context:
+    cluster: vagrant
+    user: kubelet
+  name: worker
+current-context: worker 

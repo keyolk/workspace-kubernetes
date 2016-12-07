@@ -1,0 +1,6 @@
+{{ with secret "vagrant/pki/kube/issue/kube-controller-manager" "common_name=kube-controller-manager"}}
+{{ .Data.serial_number }}
+{{ .Data.certificate | plugin "certdump" "../master/pki/kube-controller-manager-cert.pem" "keyolk"}}
+{{ .Data.private_key | plugin "certdump" "../master/pki/kube-controller-manager-key.pem"  "keyolk"}}
+{{ .Data.issuing_ca  | plugin "certdump" "../master/pki/kube-ca.pem"                      "keyolk"}}
+{{ end }}

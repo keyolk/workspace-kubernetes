@@ -1,0 +1,56 @@
+==> Vault server configuration:
+
+                 Backend: inmem
+              Listener 1: tcp (addr: "127.0.0.1:8200", cluster address: "", tls: "disabled")
+               Log Level: info
+                   Mlock: supported: true, enabled: false
+                 Version: Vault v0.6.2
+
+==> WARNING: Dev mode is enabled!
+
+In this mode, Vault is completely in-memory and unsealed.
+Vault is configured to only have a single unseal key. The root
+token has already been authenticated with the CLI, so you can
+immediately begin using the Vault CLI.
+
+The only step you need to take is to set the following
+environment variables:
+
+    export VAULT_ADDR='http://127.0.0.1:8200'
+
+The unseal key and root token are reproduced below in case you
+want to seal/unseal the Vault or play with authentication.
+
+Unseal Key: mZbnK4K7X9cs7Y2t0OPlWNUPwSB1HjNpbJnCcaOhx8Q=
+Root Token: 6d828f18-f8ed-0127-5e84-2c03ede5f0f9
+
+==> Vault server started! Log data will stream in below:
+
+2016/12/03 18:44:06.677108 [INFO ] core: security barrier not initialized
+2016/12/03 18:44:06.677424 [INFO ] core: security barrier initialized: shares=1 threshold=1
+2016/12/03 18:44:06.677508 [INFO ] core: post-unseal setup starting
+2016/12/03 18:44:06.681070 [INFO ] core: successfully mounted backend: type=generic path=secret/
+2016/12/03 18:44:06.681088 [INFO ] core: successfully mounted backend: type=cubbyhole path=cubbyhole/
+2016/12/03 18:44:06.681167 [INFO ] core: successfully mounted backend: type=system path=sys/
+2016/12/03 18:44:06.681273 [INFO ] rollback: starting rollback manager
+2016/12/03 18:44:06.682220 [INFO ] core: post-unseal setup complete
+2016/12/03 18:44:06.682344 [INFO ] core: root token generated
+2016/12/03 18:44:06.682348 [INFO ] core: pre-seal teardown starting
+2016/12/03 18:44:06.682355 [INFO ] rollback: stopping rollback manager
+2016/12/03 18:44:06.682361 [INFO ] core: pre-seal teardown complete
+2016/12/03 18:44:06.682396 [INFO ] core: vault is unsealed
+2016/12/03 18:44:06.682410 [INFO ] core: post-unseal setup starting
+2016/12/03 18:44:06.682509 [INFO ] core: successfully mounted backend: type=generic path=secret/
+2016/12/03 18:44:06.682518 [INFO ] core: successfully mounted backend: type=cubbyhole path=cubbyhole/
+2016/12/03 18:44:06.682574 [INFO ] core: successfully mounted backend: type=system path=sys/
+2016/12/03 18:44:06.682652 [INFO ] rollback: starting rollback manager
+2016/12/03 18:44:06.683117 [INFO ] core: post-unseal setup complete
+2016/12/03 18:44:07.586740 [INFO ] core: successful mount: path=vagrant/pki/etcd/ type=pki
+2016/12/03 18:44:07.616757 [INFO ] core: successful mount: path=vagrant/pki/dex/ type=pki
+2016/12/03 18:44:07.641117 [INFO ] core: successful mount: path=vagrant/pki/keycloak/ type=pki
+2016/12/03 18:44:07.667314 [INFO ] core: successful mount: path=vagrant/pki/kube/ type=pki
+==> Vault shutdown triggered
+2016/12/03 21:21:38.686425 [INFO ] core: pre-seal teardown starting
+2016/12/03 21:21:38.686456 [INFO ] rollback: stopping rollback manager
+2016/12/03 21:21:38.686482 [INFO ] core: pre-seal teardown complete
+2016/12/03 21:21:38.686505 [INFO ] core: vault is sealed

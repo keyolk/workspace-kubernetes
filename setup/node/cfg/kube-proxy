@@ -1,0 +1,6 @@
+KUBE_LOGTOSTDERR="--logtostderr=true"
+KUBE_LOG_LEVEL="--v=4"
+NODE_HOSTNAME="--hostname-override=kube-3.local.io"
+KUBE_MASTER="--master=https://kube-apiserver.local.io"
+KUBE_PROXY_MODE="--proxy-mode=iptables"
+KUBE_CONFIG="--kubeconfig=/opt/kubernetes/kube-cfg/kube-proxy.yml"
