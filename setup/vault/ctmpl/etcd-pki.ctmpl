@@ -1,4 +1,4 @@
-{{ with secret "vagrant/pki/etcd/issue/member" "common_name=etcd.local.io"}}
+{{ with secret "vagrant/pki/etcd/issue/member" "common_name=*.local.io" "alt_names=localhost"}}
 {{ .Data.serial_number }}
 {{ .Data.certificate | plugin "certdump" "../master/pki/etcd-cert.pem"  "keyolk"}}
 {{ .Data.private_key | plugin "certdump" "../master/pki/etcd-key.pem"   "keyolk"}}

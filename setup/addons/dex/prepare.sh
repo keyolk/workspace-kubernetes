@@ -1,0 +1,26 @@
+#!/bin/bash
+SETUP_HOME=/home/keyolk/kubernetes/setup
+DEX_CA="$SETUP_HOME/dex/pki/dex-ca.pem"
+DEX_CERT="$SETUP_HOME/dex/pki/dex-cert.pem"
+DEX_KEY="$SETUP_HOME/dex/pki/dex-key.pem"
+GITHUB_CLIENT_ID="547b4ab073b4e398d4f0"
+GITHUB_CLIENT_SECRET="fd6141743bc4a8eec93ea5057c9f37f3b28c958c"
+GOOGLE_CLIENT_ID="876076639444-o3u23f69dilus1a0d77tdt1oqs1fih5b.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="OJLsAKyJlcfciKgnHshupf48"
+
+DEX_CA_TEXT=`cat $DEX_CA | base64 -w 10000`
+DEX_CERT_TEXT=`cat $DEX_CERT | base64 -w 10000`
+DEX_KEY_TEXT=`cat $DEX_KEY | base64 -w 10000`
+DEX_GITHUB_CLIENT_ID_TEXT=`echo -n $GITHUB_CLIENT_ID | base64 -w 10000`
+DEX_GITHUB_CLIENT_SECRET_TEXT=`echo -n $GITHUB_CLIENT_SECRET | base64 -w 10000`
+DEX_GOOGLE_CLIENT_ID_TEXT=`echo -n $GOOGLE_CLIENT_ID | base64 -w 10000`
+DEX_GOOGLE_CLIENT_SECRET_TEXT=`echo -n $GOOGLE_CLIENT_SECRET | base64 -w 10000`
+
+sed -e "s/{{DEX_CA_TEXT}}/$DEX_CA_TEXT/g" < template/dex.yaml \
+  | sed -e "s/{{DEX_CERT_TEXT}}/$DEX_CERT_TEXT/g" \
+  | sed -e "s/{{DEX_KEY_TEXT}}/$DEX_KEY_TEXT/g" \
+  | sed -e "s/{{DEX_GITHUB_CLIENT_ID_TEXT}}/$DEX_GITHUB_CLIENT_ID_TEXT/g" \
+  | sed -e "s/{{DEX_GITHUB_CLIENT_SECRET_TEXT}}/$DEX_GITHUB_CLIENT_SECRET_TEXT/g" \
+  | sed -e "s/{{DEX_GOOGLE_CLIENT_ID_TEXT}}/$DEX_GOOGLE_CLIENT_ID_TEXT/g" \
+  | sed -e "s/{{DEX_GOOGLE_CLIENT_SECRET_TEXT}}/$DEX_GOOGLE_CLIENT_SECRET_TEXT/g" \
+  > dex.yaml

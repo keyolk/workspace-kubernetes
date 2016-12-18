@@ -1,0 +1,11 @@
+token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjhjMGI4YjA0MTM0NjgxZjRjYTdmOGE1ZWU4MWU4YWQwNjU4Y2Y4MDQifQ.eyJpc3MiOiJodHRwczovL2t1YmUtMS5sb2NhbC5pbzozMDQ0MyIsInN1YiI6ImtleW9sayIsImF1ZCI6ImV4YW1wbGUtYXBwIiwiZXhwIjoxNDgyMDI4NjEwLCJpYXQiOjE0ODE5NDIyMTAsImVtYWlsIjoia2V5b2xrQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJncm91cHMiOlsiY25jdCJdLCJuYW1lIjoia2V5b2xrIn0.vXgwes6OgmcWyFEqqxZfaXH2yiKxArmS2NN8SuDeIKthTzEf7doPLwL5EPdBEzAlTVb5w8KiQ4XjSDoTtJrNE1SR7s4MqG7S-wru2Rt7Eu5vR8qM9zBoqMCAz7DvOOhAhPF_2CBcF4pT95RDomrDyFBGfqUONVgly7YEGS60W2YCyzt1UZMN9kGzFXu7CPl8U8u7jx8g3firnTPHCksk7K4wmBUG6HuPYikcaABC2nSVe_pJ_dZsWuggK9RjuqKsUBcAH8scuHsE3rEytqCvzNft_YZeawoAISWA1086ujc0zq3T1UqSv0idv_8126AsNrijtG2rPj7apBxmKlQrdg"
+
+curl --cacert ../../../master/pki/kube-ca.pem -v -H "Authorization: Bearer $token" https://kube-apiserver.local.io/api/v1/nodes
+
+kubectl config set-credentials dex \
+  --token=$token
+
+kubectl config use-context dex-vagrant
+
+kubectl get node
+

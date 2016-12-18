@@ -24,7 +24,7 @@ spec:
             - name: "VAULT_DEBUG"
               value: "true"
             - name: "CONSUL_SERVICE_HOST"
-              value: "consul.kube-system.svc.cluster.local"
+              value: "consul.kube-system.svc.cluster.io"
             - name: "CONSUL_SERVICE_PORT_HTTPS"
               value: "8500"
             - name: "CONSUL_SCHEME"

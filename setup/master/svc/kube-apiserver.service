@@ -5,28 +5,34 @@ Documentation=https://github.com/kubernetes/kubernetes
 [Service]
 EnvironmentFile=-/opt/kubernetes/cfg/kube-apiserver
 ExecStart=/opt/kubernetes/bin/kube-apiserver \
-	  ${KUBE_LOGTOSTDERR}		\
-	  ${KUBE_LOG_LEVEL}     \
-	  ${KUBE_ETCD_SERVERS}  \
+    ${KUBE_AUDIT_LOG_PATH}      \
+	  ${KUBE_LOGTOSTDERR}		      \
+	  ${KUBE_LOG_LEVEL}           \
+	  ${KUBE_ETCD_SERVERS}        \
 	  ${KUBE_ADVERTISE_ADDRESS}   \
-	  ${KUBE_API_ADDRESS}   \
-	  ${KUBE_API_PORT}      \
-	  ${KUBE_BIND_ADDRESS}	\
-	  ${KUBE_SECURE_PORT}		\
-	  ${KUBE_ALLOW_PRIV}   	\
+	  ${KUBE_API_ADDRESS}         \
+	  ${KUBE_API_PORT}            \
+	  ${KUBE_BIND_ADDRESS}	      \
+	  ${KUBE_SECURE_PORT}		      \
+	  ${KUBE_ALLOW_PRIV}   	      \
 	  ${KUBE_SERVICE_ADDRESSES}  	      \
 	  ${KUBE_ADMISSION_CONTROL}  	      \
 	  ${KUBE_API_CLIENT_CA_FILE} 	      \
 	  ${KUBE_API_TLS_CERT_FILE}  	      \
 	  ${KUBE_API_TLS_PRIVATE_KEY_FILE}  \
+	  ${KUBE_SERVICE_ACCOUNT_KEY_FILE}  \
 	  ${KUBE_ETCD_CLIENT_CA_FILE} 	    \
 	  ${KUBE_ETCD_TLS_CERT_FILE}  	    \
 	  ${KUBE_ETCD_TLS_PRIVATE_KEY_FILE} \
-	  ${KUBE_OIDC_ISSUER_URL}  \
-	  ${KUBE_OIDC_CA_FILE} 	    \
-	  ${KUBE_OIDC_CLIENT_ID}	\
-	  ${KUBE_OIDC_USERNAME_CLAIM}  \
-	  ${KUBE_OIDC_GROUPS_CLAIM} 
+	  ${KUBE_OIDC_ISSUER_URL}           \
+	  ${KUBE_OIDC_CA_FILE} 	            \
+	  ${KUBE_OIDC_CLIENT_ID}	          \
+	  ${KUBE_OIDC_USERNAME_CLAIM}       \
+	  ${KUBE_OIDC_GROUPS_CLAIM}         \
+    ${KUBE_BASIC_AUTH_FILE}           \
+    ${KUBE_AUTHZ_MODE}                \
+    ${KUBE_AUTHZ_RBAC_SUPER_USER}     \
+    ${KUBE_RUNTIME_CONFIG} 
 Restart=on-failure
 
 [Install]

@@ -1,5 +1,5 @@
 #!/bin/bash
-openssl req -x509 -nodes -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=vault.kube-system.svc.cluster.local"
+openssl req -x509 -nodes -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=vault.kube-system.svc.cluster.io"
 
 echo "
 apiVersion: v1

@@ -1,16 +1,11 @@
-token="eyJhbGciOiJSUzI1NiIsImtpZCI6ImFlNTFmOGVjZTljNzExMGEyZTY0ZjljZGYyMWYzNzQ0ZTdkZTA4NjgifQ.eyJpc3MiOiJodHRwczovL2RleC5sb2NhbC5pbzo1NTU0L2RleCIsInN1YiI6IjEwODIyMTEzNTA1NzI2ODAyOTczMiIsImF1ZCI6ImV4YW1wbGUtYXBwIiwiZXhwIjoxNDc5OTM1ODY4LCJpYXQiOjE0Nzk4NDk0NjgsImVtYWlsIjoia2V5b2xrQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoi7KCV7LCs7ZuIIn0.YDoUJg5dzCel-lBWlXnQPBj1tStvnFmehqLWs-XXLPRDT5vZZk-NtkxcuD8CLl8l2jQKExJUiR2nSVTGASZuwoEhjFh0YpZPzWzKX9m9-1wixRjagWLwk0jvv2KTkSFD9IBU8smzsAaK98vr5Y3KvvcQGJLGXSQJ1UGgnvkykfQsahsZW9zHiDjUNDXb5bOXsTqLeBibggwAdBzbmGTTi5Cu28Cy11QDzLXKHaC7dFJSZT1mHtACKJdpqR6dPsn-75R0RnI37TRJT3TbdO19xwf5cUsEXxV85ohLRizc_eVs8pDq8YVlZbOb1DEIbL15OcpmMYwqiyYCHmgN-qut0g"
+token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjA2NWU1NWUxOGU4MWU2OGE3NTdhYzUyYTQxMzNjODczYWY5MTZiMjYifQ.eyJpc3MiOiJodHRwczovL2xhcHRvcC5sb2NhbC5pbzo1NTU0Iiwic3ViIjoiMTA4MjIxMTM1MDU3MjY4MDI5NzMyIiwiYXVkIjoiZXhhbXBsZS1hcHAiLCJleHAiOjE0ODIwMjMwNjgsImlhdCI6MTQ4MTkzNjY2OCwiZW1haWwiOiJrZXlvbGtAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiLsoJXssKztm4gifQ.X-laHxp3zwzP-AVrwpTDQsXdnPqYOTq-m6UR2-15e3cuCQpxcwtMLTYRJwI_XAubROheUP-in4g7uBiLpTBMDKYnL2p8rDz2XFfuZz404iPavpzS2Z7rk3PSiohsjRaQEiskWWxXI6oXP8beITydTE9U7Ojgd2sgwsprwUe6LJF1uJLsz8ksi8avlazTV-zC3n0jrZfa7Zoc3cBD3YGDIp2zR5XyMVR0QVij20zO8vlz9smeJWGhD6D-3CTBQKOujyttzY6a7ZFbK8Z7qKeFTfcB6c38ct3psudPkMnO43Xdx9kOWgVihYm3IwMjFmM1L-Se5B5hb-fen1jGtuzrug"
 
-curl -H "Authorization: Bearer $token" -k https://kube-apiserver.local.io:443/api/v1/nodes
+curl --cacert ../../master/pki/kube-ca.pem -v -H "Authorization: Bearer $token" https://kube-apiserver.local.io/api/v1/nodes
 
-kubectl config set-cluster vagrant-dex \
-  --server=https://kube-apiserver.local.io \
-  --certificate-authority=/opt/kubernetes/pki/kube-ca.pem
-
-kubectl config set-credentials keyolk-dex \
-  --token=$token
-
-kubectl config set-context vagrant-dex --cluster=vagrant-dex --user=keyolk-dex --namespace=default
-kubectl config use-context vagrant-dex
-
-kubectl get node
-
+#kubectl config set-credentials dex \
+#  --token=$token
+#
+#kubectl config use-context dex-vagrant
+#
+#kubectl get node
+#

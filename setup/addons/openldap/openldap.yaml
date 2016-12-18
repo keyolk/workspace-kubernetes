@@ -1,0 +1,62 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: openldap
+  namespace: kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      containers:
+      - name: openldap
+        image: osixia/openldap
+        ports:
+          - containerPort: 389
+          - containerPort: 636
+        env:
+        - name: LDAP_DOMAIN
+          value: local.io
+        - name: LDAP_ADMIN_PASSWORD
+          value: admin
+      - name: phpldapadmin
+        image: osixia/phpldapadmin
+        ports:
+          - containerPort: 80
+        env:
+        - name: PHPLDAPADMIN_HTTPS
+          value: "false"
+        - name: PHPLDAPADMIN_LDAP_HOSTS
+          value: localhost
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openldap
+  namespace: kube-system
+spec:
+  ports:
+  - name: ldap
+    port: 389
+    targetPort: 389
+  - name: ldap-ssl
+    port: 636
+    targetPort: 636
+  selector:
+    app: openldap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openldap-admin
+  namespace: kube-system
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 31080
+  selector:
+    app: openldap

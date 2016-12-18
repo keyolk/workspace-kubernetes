@@ -1,0 +1,250 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dex
+  namespace: kube-system
+spec:
+  type: NodePort
+  ports:
+  - name: dex
+    port: 443
+    protocol: TCP
+    targetPort: 443
+    nodePort: 30443
+  selector:
+    app: dex
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dex.tls
+  namespace: kube-system
+data:
+  tls.ca: {{DEX_CA_TEXT}}
+  tls.crt: {{DEX_CERT_TEXT}}
+  tls.key: {{DEX_KEY_TEXT}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dex.github
+  namespace: kube-system
+type: Opaque
+data:
+  client-id: {{DEX_GITHUB_CLIENT_ID_TEXT}}
+  client-secret: {{DEX_GITHUB_CLIENT_SECRET_TEXT}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dex.google
+  namespace: kube-system
+type: Opaque
+data:
+  client-id: {{DEX_GOOGLE_CLIENT_ID_TEXT}}
+  client-secret: {{DEX_GOOGLE_CLIENT_SECRET_TEXT}}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: dex
+  namespace: kube-system
+data:
+  config.yaml: |
+    issuer: https://kube-1.local.io:30443
+
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
+
+    web:
+      https: 0.0.0.0:443
+      tlsCert: /etc/dex/tls/tls.crt
+      tlsKey: /etc/dex/tls/tls.key
+
+    logger:
+      level: "debug"
+      format: "text"
+
+    connectors:
+    - type: mockCallback
+      id: mock
+      name: Example
+    - type: oidc
+      id: google
+      name: Google
+      config:
+        issuer: https://accounts.google.com
+        clientID: $GOOGLE_CLIENT_ID
+        clientSecret: $GOOGLE_CLIENT_SECRET
+        redirectURI: https://kube-1.local.io:30443/callback
+    - type: github
+      id: github
+      name: GitHub
+      config:
+        clientID: $GITHUB_CLIENT_ID
+        clientSecret: $GITHUB_CLIENT_SECRET
+        redirectURI: https://kube-1.local.io:30443/callback
+    - type: ldap
+      id: ldap
+      config:
+        host: openldap.kube-system.svc.cluster.io:389
+        insecureNoSSL: true
+        bindDN: cn=admin,dc=local,dc=io
+        bindPW: admin
+        userSearch:
+          baseDN: ou=users,dc=local,dc=io
+          filter: "(objectClass=posixAccount)"
+          username: uid
+          idAttr: uid
+          emailAttr: mail
+          nameAttr: uid
+        groupSearch:
+          baseDN: ou=groups,dc=local,dc=io
+          filter: "(objectClass=posixGroup)"
+          userAttr: uid
+          groupAttr: memberUid
+          nameAttr: cn
+
+    oauth2:
+      skipApprovalScreen: true
+
+    staticClients:
+    - id: example-app
+      redirectURIs:
+        - 'http://kube-1.local.io:30080/callback'
+      name: 'Example App'
+      secret: ZXhhbXBsZS1hcHAtc2VjcmV0
+
+    enablePasswordDB: true
+    staticPasswords:
+    - email: "admin@example.com"
+      hash: "$2a$10$33EMT0cVYVlPy6WAMCLsceLYjWhuHpbz5yuZxu/GAFj03J9Lytjuy"
+      username: "admin"
+      userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dex
+  namespace: kube-system
+  labels:
+    app: dex
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dex
+    spec:
+      containers:
+      - name: dex
+        image: quay.io/coreos/dex:v2.0.0
+        imagePullPolicy: Always
+        command: ["/usr/local/bin/dex", "serve", "/etc/dex/cfg/config.yaml"]
+        ports:
+        - name: https
+          containerPort: 443
+
+        volumeMounts:
+        - name: config
+          mountPath: /etc/dex/cfg
+        - name: tls
+          mountPath: /etc/dex/tls
+
+        env:
+        - name: GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: dex.github
+              key: client-id
+        - name: GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dex.github
+              key: client-secret
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: dex.google
+              key: client-id
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dex.google
+              key: client-secret
+
+      volumes:
+      - name: config
+        configMap:
+          name: dex
+          items:
+          - key: config.yaml
+            path: config.yaml
+      - name: tls
+        secret:
+          secretName: dex.tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dex-app
+  namespace: kube-system
+spec:
+  type: NodePort
+  ports:
+  - name: dex-app
+    port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30080
+  selector:
+    app: dex-app
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dex-app
+  namespace: kube-system
+  labels:
+    app: dex-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dex-app
+    spec:
+      containers:
+      - name: dex-app
+        image: quay.io/keyolk/dex-app:0.0.1
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 80
+
+        volumeMounts:
+        - name: tls
+          mountPath: /etc/dex/tls
+
+        env:
+        - name: DEX_ISSUER
+          value: https://kube-1.local.io:30443
+        - name: DEX_CA
+          value: /etc/dex/tls/tls.ca
+        - name: DEX_CERT
+          value: /etc/dex/tls/tls.cert
+        - name: DEX_KEY
+          value: /etc/dex/tls/tls.key
+        - name: DEX_APP_CLIENT_ID
+          value: example-app
+        - name: DEX_APP_LISTEN_ADDRESS
+          value: http://0.0.0.0:80
+        - name: DEX_APP_REDIRECT_URI
+          value: http://kube-1.local.io:30080/callback
+
+      volumes:
+      - name: tls
+        secret:
+          secretName: dex.tls

@@ -5,10 +5,10 @@ kubectl apply -f vault.yaml
 
 ## 2. Setup Vault
 # 2.1 Port forward vault
-#kubectl port-forward vault-... 8200
-#export VAULT_ADDR=http://localhost:8200
+kubectl port-forward vault-361162082-wl81k 8200
+export VAULT_ADDR=http://localhost:8200
 
-export VAULT_ADDR=http://vault.kube-system.svc.cluster.local:8200
+#export VAULT_ADDR=http://vault.kube-system.svc.cluster.io:8200
 #export VAULT_CLIENT_CAS=
 
 # 2.2 Set up the Root Certificate Authority

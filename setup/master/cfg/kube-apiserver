@@ -1,5 +1,6 @@
+KUBE_AUDIT_LOG_PATH="--audit-log-path=/opt/kubernetes/logs/audit.log"
 KUBE_LOGTOSTDERR="--logtostderr=true"
-KUBE_LOG_LEVEL="--v=4"
+KUBE_LOG_LEVEL="--v=5"
 KUBE_ETCD_SERVERS="--etcd-servers=http://etcd.local.io:2379"
 KUBE_ADVERTISE_ADDRESS="--advertise-address=172.28.128.3"
 KUBE_API_ADDRESS="--insecure-bind-address=127.0.0.1"
@@ -12,11 +13,16 @@ KUBE_ADMISSION_CONTROL="--admission-control=LimitRanger,AlwaysAdmit,SecurityCont
 KUBE_API_CLIENT_CA_FILE="--client-ca-file=/opt/kubernetes/pki/kube-ca.pem"
 KUBE_API_TLS_CERT_FILE="--tls-cert-file=/opt/kubernetes/pki/kube-apiserver-cert.pem"
 KUBE_API_TLS_PRIVATE_KEY_FILE="--tls-private-key-file=/opt/kubernetes/pki/kube-apiserver-key.pem"
+KUBE_SERVICE_ACCOUNT_KEY_FILE="--service-account-key-file=/opt/kubernetes/pki/kube-service-account-key.pem"
 #KUBE_ETCD_CLIENT_CA_FILE="--etcd-cafile=/opt/kubernetes/pki/etcd-ca.pem"
 #KUBE_ETCD_TLS_CERT_FILE="--etcd-certfile=/opt/kubernetes/pki/etcd-cert.pem"
 #KUBE_ETCD_TLS_PRIVATE_KEY_FILE="--etcd-keyfile=/opt/kubernetes/pki/etcd-key.pem"
-KUBE_OIDC_ISSUER_URL="--oidc-issuer-url=https://dex.local.io:5554/dex"
+KUBE_OIDC_ISSUER_URL="--oidc-issuer-url=https://kube-1.local.io:30443"
 KUBE_OIDC_CA_FILE="--oidc-ca-file=/opt/kubernetes/pki/dex-ca.pem"
 KUBE_OIDC_CLIENT_ID="--oidc-client-id=example-app"
 KUBE_OIDC_USERNAME_CLAIM="--oidc-username-claim=email"
 KUBE_OIDC_GROUPS_CLAIM="--oidc-groups-claim=groups"
+KUBE_BASIC_AUTH_FILE=--basic-auth-file=/opt/kubernetes/kube-cfg/basicauth.csv
+#KUBE_AUTHZ_MODE=--authorization-mode=RBAC
+#KUBE_AUTHZ_RBAC_SUPER_USER=--authorization-rbac-super-user=admin
+#KUBE_RUNTIME_CONFIG=--runtime-config=rbac.authorization.k8s.io/v1alpha1

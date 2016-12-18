@@ -5,7 +5,7 @@ kill -9 `pidof consul-template`
 
 sleep 1
 
-vault server -dev &> vault.log &
+vault server -dev &> logs/vault.log &
 
 sleep 1
 
@@ -135,6 +135,6 @@ rm token
 
 sed -i "s/\"token.*/\"token\": \"${TOKEN}\",/g" consul-template.cfg
 
-consul-template -config=consul-template.cfg &> consul-template.log &
+consul-template -config=consul-template.cfg &> logs/consul-template.log &
 
 echo "done!"

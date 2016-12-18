@@ -30,7 +30,7 @@ if [ ! -z "${VAULT_SSL_KEY}" ] &&  [ ! -z "${VAULT_SSL_CRT}" ]; then
   echo "${VAULT_SSL_KEY}" | sed -e 's/\"//g' | sed -e 's/^[ \t]*//g' | sed -e 's/[ \t]$//g' > /etc/vault/ssl/vault.key
   echo "${VAULT_SSL_CRT}" | sed -e 's/\"//g' | sed -e 's/^[ \t]*//g' | sed -e 's/[ \t]$//g' > /etc/vault/ssl/vault.crt
 else
-  openssl req -x509 -newkey rsa:2048 -nodes -keyout /etc/vault/ssl/vault.key -out /etc/vault/ssl/vault.crt -days 365 -subj "/CN=vault.kube-system.svc.cluster.local" 
+  openssl req -x509 -newkey rsa:2048 -nodes -keyout /etc/vault/ssl/vault.key -out /etc/vault/ssl/vault.crt -days 365 -subj "/CN=vault.kube-system.svc.cluster.io" 
 fi
 
 export VAULT_IP=`hostname -i`
@@ -55,7 +55,7 @@ fi
 
 ## Master stuff
 
-master() {
+function master() {
 
   vault server -config=/etc/vault/config.json $@ &
 
@@ -76,7 +76,6 @@ master() {
     vault unseal `grep 'Key 3:' /root/vault_key.txt | awk '{print $NF}'`
 
   fi
-
 }
 
 case "$1" in

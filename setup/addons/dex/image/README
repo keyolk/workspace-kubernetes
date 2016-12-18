@@ -1,0 +1,13 @@
+build 할때 주의가 필요하다.
+github.com/coreos/dex 에서 
+example-app에 대해선 CGO_ENABLED=0 로 설정을 해주고 build 해야 한다.
+아래와 같이 되어야한다.
+
+Alpine 같은 저용량 image를 base로 할때 shared object와 linking되게 하는걸 막아준다.
+
+** Makefile **
+```
+bin/example-app: FORCE
+	@CGO_ENABLED=0 go install -v -ldflags $(LD_FLAGS) $(REPO_PATH)/cmd/example-app
+
+```
