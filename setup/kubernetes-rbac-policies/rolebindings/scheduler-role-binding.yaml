@@ -7,5 +7,5 @@ subjects:
     name: kube-scheduler
 roleRef:
   kind: ClusterRole
-  name: cluster-admin-all
+  name: scheduler
   apiVersion: rbac.authorization.k8s.io/v1alpha1

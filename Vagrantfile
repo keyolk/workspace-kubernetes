@@ -40,4 +40,8 @@ Vagrant.configure("2") do |config|
       target.vm.provision :shell, path: "bootstrap.sh"
     end
   end
+
+  config.landrush.host 'etcd.local.io', '172.28.128.3'
+  config.landrush.host 'kube-apiserver.local.io', '172.28.128.3'
+  config.landrush.host 'laptop.local.io', '172.28.128.1'
 end

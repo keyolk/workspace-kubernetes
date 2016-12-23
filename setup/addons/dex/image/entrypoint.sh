@@ -3,6 +3,7 @@
 : ${DEX_ISSUER?" is empty string"}
 : ${DEX_APP_LISTEN_ADDRESS?" is empty string"}
 : ${DEX_APP_REDIRECT_URI?" is empty string"}
+
 : ${DEX_CA?" is empty string"}
 : ${DEX_CERT?" is empty string"}
 : ${DEX_KEY?" is empty string"}

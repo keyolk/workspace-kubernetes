@@ -2,21 +2,60 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vault
-  labels:
-    app: vault
+  namespace: kube-system
 spec:
+  type: NodePort
   ports:
     - name: vault
-      port: 8200
+      port: 443
+      protocol: TCP
+      targetPort: 443
+      nodePort: 32443
   selector:
     app: vault
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vault.tls
+  namespace: kube-system
+data:
+  vault.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURuRENDQVlRQ0FRRXdEUVlKS29aSWh2Y05BUUVMQlFBd1ZqRUxNQWtHQTFVRUJoTUNWVk14Q3pBSkJnTlYKQkFnTUFsZEJNUkF3RGdZRFZRUUhEQWRUWldGMGRHeGxNUk13RVFZRFZRUUtEQXBUWVcxemRXNW5VMFJUTVJNdwpFUVlEVlFRRERBb3FMbXh2WTJGc0xtbHZNQjRYRFRFMk1USXlNVEU0TWpRd05Gb1hEVEUzTURFeU1ERTRNalF3Ck5Gb3dWakVMTUFrR0ExVUVCaE1DVlZNeEN6QUpCZ05WQkFnTUFsZEJNUkF3RGdZRFZRUUhEQWRUWldGMGRHeGwKTVJNd0VRWURWUVFLREFwVFlXMXpkVzVuVTBSVE1STXdFUVlEVlFRRERBb3FMbXh2WTJGc0xtbHZNSUdmTUEwRwpDU3FHU0liM0RRRUJBUVVBQTRHTkFEQ0JpUUtCZ1FDK2I1MWdIc2EyWWJEN0ZMMDN2d2J4R001TDdrYUdDbGZtCkFXbFo2aGkxbER5Z00wMTlNVDFyNHRiY0RlTFN4VFE3QUE5VkhxdW9HMHBmTzM2UUNHMjhRbVZ4U0dDZ3hhS2UKL0dYYzJ4OWhjd09DZ01EdktGMHRlZW44aXo2Z1dsbXVZakJoSDZPRlNLRkRKQ1RVVEprZStpWFkrbkh3d3lwcQpleko5NHdldlpRSURBUUFCTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElDQVFDWDVPdWd0VXNGMmsxemFvY3pBQW1EClNVemdQRjRGUEhBSUJPS0xwRTJYQmMyN25pZk4vWnlFVkFOMHRRWmZMSlBXeWwwYWdZclZGeklwekhpTC94R2IKOHp1aTBmUDRKVFUyS1dDSmFxSE5RMHYxSTRuYzBzdUpYZ1A4RlhQOFU3QmhWakhXcVgvNDBLVzNCbXlqNGdpMApteS9CV1BKV2RGWi9lTG43M3JaWU45a2tzNHBxODFpcTJYOUxmbnBoTmNRTlJlNC84UGtSUXJvY3B5b2hPS0hvCkJtREtVR3REQ1pjNUpNZTRGa0dJb0h2MWZIUlVkUG4yVzAxWkNZMHVST2xRUlg0MjN2dDljZmQzblZRSDQ4Qm0KZkRhaHhQV1VYSlJIc083U21nRWpmaXpwSnRLN3I1UktWUk5ydldqVUlFbml3VjVDWUMvRFdrN2xGRXB2V3VzdgoweXFWVjhRY3U1VVZVWGlkVGQ1M3c4WlpMTXUwNGJuWkF0Ym9Edks5a3A3TUViOGJHRFNZWmRjUTF0cnZ6c3ArCkhjelRhTTFudXdEU0hHdHdxcS9BVzNSb3J0NCtTSDlhWEFBWmpZU2QyVWo5M3FudGZmcmY5S1R4WG1zVEozOG8KNVl6bElScERNYmVNRVlVQWc4RzAvdnZvcFUxZllhRjdyMzJPRkVEZzlGbW5DZ2IxZnFRbWJoOFczRE1FaGJhQgpmTFZHb095VlYyYlg5TFZkSy9CbW1IZlpaYkRvUC9RYVR0QlJoT3BPOUt1WUw5WG5adGRTckIxTTE5cnRSM0hwCmYyaUpUZkZhczJUNE1XZGJ6UU1xYklzTEovbnBBWjhJelM5ZnlqTlhod0xRaGViamFLdTNmc1ZiQVBNS1JvV08KRnNGbGNpVDA2VUs5emtISkM4WTg3UT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  vault.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlDWEFJQkFBS0JnUUMrYjUxZ0hzYTJZYkQ3RkwwM3Z3YnhHTTVMN2thR0NsZm1BV2xaNmhpMWxEeWdNMDE5Ck1UMXI0dGJjRGVMU3hUUTdBQTlWSHF1b0cwcGZPMzZRQ0cyOFFtVnhTR0NneGFLZS9HWGMyeDloY3dPQ2dNRHYKS0YwdGVlbjhpejZnV2xtdVlqQmhINk9GU0tGREpDVFVUSmtlK2lYWStuSHd3eXBxZXpKOTR3ZXZaUUlEQVFBQgpBb0dBWHF1V0RPYS8yb01PUElPKzNTdTJBNzFWTVNJdkpRdVhUdHg4eHhvOVZtZHZEQ1QwN0x2QjBSUmZ3OTJUCldUeDREcXlrOHFmZ3BoMkxCM1RJSWtwT1lsODRvQUFNQVF0THhYYmt1K1F5RGdBVlBaYS96c2ZqODQydDBRUUQKUkRUZUl3Tyt0cGNiSkNrK2Q2cnNrU0FweEUzSHQ4VXBPYXkrelo4STJ1bVpHckVDUVFEN0JPRVZCamVNQzd4YgpuekdKcjVTMG9mWE1CTDBmakd5Zkswdkk1OUJ2ckYzTnpKY2Y0RDNTbWtKT3g5T2E2ZWVoNnRZcEVjKzRVeHBnClV1R0phL2lEQWtFQXdqYjhzVnQ0bVpJNlJDcEFBZmN2TXJYdFNwMko4b3FTNC9tQndhVTZweTE5RWZqSUtXMEMKTjQzOVJWa0N1emR1ZWh5N1BuNW4xdUlMSWVUNFU4c2o5d0pBVDNmLytqUDVxZkNkTlRSMDdtNFQyZ3ZjVVRhKwoyUm9QMldSUG5jOG1BZlREemIrVHFKZkplcjh6ZHRWMGZIckl4azRlZHVvWXBQWktSMngxMHBmSUdRSkJBSXRrCjZBMXI5NjFSMU53ajd2ajZMemdZZDQzOGNJeFNoWWQzQjNpelhOdXN2SDN2cjhwNzRRRjZ1ZlBTSlRHMllXYm4KeEVUZ2VTc3o1b1dYVDl6a2lwVUNRRmp6MDIyazcyTG5BZHBvc2o2QmxPVmdWNlZNcnlCL1k5TlJkSFhVSWdnQwpaOVMxbmlJTnptakhDQjZMZE1yUFh4Q1NjbStTWXUvbkpITHIrUy9NOGN3PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault
+  namespace: kube-system
+data: 
+  config.json : |
+
+    #backend "inmem" {
+
+    #}
+    #
+    backend "consul" {
+      address = "consul.kube-system.svc.cluster.io:8500"
+      scheme = "http"
+      token = "token"
+    }
+    
+    listener "tcp" {
+      address = "0.0.0.0:443"
+      tls_key_file = "/etc/vault/tls/vault.key"
+      tls_cert_file = "/etc/vault/tls/vault.crt"
+    }
+
+    disable_mlock = true
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: vault
+  namespace: kube-system
   labels:
     app: vault
-  name: vault
 spec:
   replicas: 1
   template:
@@ -25,12 +64,29 @@ spec:
         app: vault
     spec:
       containers:
-      - image: vault:0.6.2
-        name: vault
+      - name: vault
+        image: 'quay.io/keyolk/vault:0.5.2'
+        imagePullPolicy: Always
         ports:
-        - containerPort: 8200
-          name: vaultport
-          protocol: TCP
+          - name: https
+            containerPort: 443
+
+        volumeMounts:
+        - name: config
+          mountPath: /etc/vault/cfg
+        - name: tls
+          mountPath: /etc/vault/tls
         env:
-        - name: VAULT_DEV_ROOT_TOKEN_ID
-          value: vault-root-token
+        - name: "VAULT_DEBUG"
+          value: "true"
+
+      volumes:
+      - name: config
+        configMap:
+          name: vault
+          items:
+          - key: config.json
+            path: config.json
+      - name: tls
+        secret:
+          secretName: vault.tls

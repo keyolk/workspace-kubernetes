@@ -1,0 +1,100 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: consul
+  namespace: kube-system
+  labels:
+    ssl: "true"
+    httpsBackend: "true"
+    httpsOnly: "true"
+spec:
+  rules:
+  - host: consul.local.io
+    http:
+      paths:
+      - backend:
+          serviceName: consul
+          servicePort: 8543
+        path: /
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+  namespace: kube-system
+  labels:
+    name: consul
+spec:
+  ports:
+    # the port that this service should serve on
+    - name: http
+      port: 8500
+    - name: https
+      port: 8543
+    - name: rpc
+      port: 8400
+    - name: serflan
+      port: 8301
+    - name: serfwan
+      port: 8302
+    - name: server
+      port: 8300
+    - name: consuldns
+      port: 53
+  # label keys and values that must match in order to receive traffic for this service
+  selector:
+    pool: consulpool
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: kube-system
+  name: consul
+spec:
+  replicas: 3                            # number of consul containers
+  # selector identifies the set of Pods that this
+  # replication controller is responsible for managing
+  template:
+    metadata:
+      labels:
+        # Important: these labels need to match the selector above
+        # The api server enforces this constraint.
+        pool: consulpool
+        app: consul
+    spec:
+      containers:
+      - name: consul
+        image: keyolk/consul:0.6.3
+        imagePullPolicy: Always
+        #command: ["bin/sh"]
+        #tty: true
+        env:
+        - name: "ENVIRONMENT"
+          value: "local"             # some name
+        - name: "MASTER_TOKEN"
+          value: "token"   # UUID preferable
+        - name: "GOSSIP_KEY"
+          value: "cg8StVXbQJ0gPvMd9o7yrg=="         # some random key for encryption
+        - name: "CONSUL_DEBUG"
+          value: "false"                             # to debug or not to debug
+        - name: "CONSUL_SERVER_COUNT"
+          value: "3"                   # integer value for number of containers
+        ports:
+        - containerPort: 8500
+          name: ui-port
+        - containerPort: 8400
+          name: alt-port
+        - containerPort: 53
+          name: udp-port
+        - containerPort: 8543
+          name: https-port
+        - containerPort: 8500
+          name: http-port
+        - containerPort: 8301
+          name: serflan
+        - containerPort: 8302
+          name: serfwan
+        - containerPort: 8600
+          name: consuldns
+        - containerPort: 8300
+          name: server

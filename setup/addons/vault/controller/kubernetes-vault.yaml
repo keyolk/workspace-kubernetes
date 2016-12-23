@@ -33,7 +33,7 @@ spec:
         - name: VAULT_TOKEN
           value: 91526d9b-4850-3405-02a8-aa29e74e17a5
         - name: VAULT_ADDR
-          value: http://vault.kube-system.cluster.io:8200
+          value: http://vault.kube-system.svc.cluster.io:8200
         - name: KUBERNETES_NAMESPACE
           valueFrom:
             fieldRef:
