@@ -5,3 +5,6 @@ logs/
 *log
 .vagrant
 kubernetes/
+*.tgz
+*.tar.*
+
