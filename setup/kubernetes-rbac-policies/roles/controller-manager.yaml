@@ -2,14 +2,10 @@
 apiVersion: rbac.authorization.k8s.io/v1alpha1
 kind: ClusterRole
 metadata:
-  name: cluster-controller-manager
+  name: controller-manager
 rules:
-  -
-    apiGroups:
-      # have access to everything except Secrets
-      - "*"
+  - apiGroups: ["*"]
     resources: ["*"]
     verbs: ["*"]
   - nonResourceURLs: [""]
     verbs: ["*"]
-

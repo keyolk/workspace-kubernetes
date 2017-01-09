@@ -1,14 +1,13 @@
-kind: RoleBinding
+---
+kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1alpha1
 metadata:
-  name: kube-system-sa-admin
-  namespace: kube-system
+  name: kube-system-readall-role-binding
 subjects:
   - kind: ServiceAccount
     name: default
     namespace: kube-system
 roleRef:
-  kind: Role
-  namespace: kube-system
-  name: kube-system-admin
+  kind: ClusterRole
+  name: admin
   apiVersion: rbac.authorization.k8s.io/v1alpha1

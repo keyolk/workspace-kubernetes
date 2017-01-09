@@ -2,28 +2,23 @@
 apiVersion: rbac.authorization.k8s.io/v1alpha1
 kind: ClusterRole
 metadata:
-  name: kubelet-runtime
+  name: proxy
 rules:
   - apiGroups:
       - ""
     resources:
-      - configmaps
-      - persistentvolumes
-      - persistentvolumeclaims
-      - secrets
+      - endpoints
+      - events
       - services
-      - healthz
+      - nodes
     verbs: ["get", "watch", "list"]
   - nonResourceURLs: ["*"]
     verbs: ["get", "watch", "list"]
+
   - apiGroups:
       - ""
     resources:
       - events
-      - nodes
-      - nodes/status
-      - pods
-      - pods/status
     verbs: ["*"]
   - nonResourceURLs: ["*"]
     verbs: ["*"]

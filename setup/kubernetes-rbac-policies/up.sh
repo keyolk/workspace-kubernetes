@@ -5,7 +5,7 @@ do
   kubectl create -f roles/$yaml
 done
 
-for yaml in `ls rolebindings`
+for yaml in `ls bindings`
 do
-  kubectl create -f rolebindings/$yaml
+  kubectl create -f bindings/$yaml
 done

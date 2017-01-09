@@ -1,11 +1,12 @@
+---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1alpha1
 metadata:
-  name: scheduler-role-binding
+  name: default
 subjects:
   - kind: User
-    name: kube-scheduler
+    name: "*"
 roleRef:
   kind: ClusterRole
-  name: scheduler
+  name: default
   apiVersion: rbac.authorization.k8s.io/v1alpha1

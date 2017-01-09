@@ -5,7 +5,7 @@ do
   kubectl delete -f roles/$yaml
 done
 
-for yaml in `ls rolebindings`
+for yaml in `ls bindings`
 do
-  kubectl delete -f rolebindings/$yaml
+  kubectl delete -f bindings/$yaml
 done
